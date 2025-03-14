@@ -1,0 +1,34 @@
+name: Build and Syntax Check
+
+on:
+  push:
+    branches: ["main"] 
+  pull_request: 
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+    # Checkout Repository
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    #Set up .NET SDK
+    - name: Set up .NET SDK
+      uses: actions/setup-dotnet@v4
+      with: 
+        dotnet-version: '9.0'
+
+    # Restore amu dependencies
+    - name: Dependancies
+      run: dotnet restore
+
+    # Run Unit Test
+    - name: Unit Test
+      run: dotnet test
+
+    # Build the Project
+    - name: Project Build
+      run: dotnet build --configuration release
